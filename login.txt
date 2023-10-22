@@ -1,0 +1,6 @@
+{
+  "username": "runner",
+  "platform": "linux",
+  "arch": "x64",
+  "release": "6.2.0-1016-gcp"
+}

@@ -1,0 +1,175 @@
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const multer = require('multer');
+const { v4: uuidv4 } = require('uuid');
+const app = express();
+const port = 3000;
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, path.join(__dirname, 'images'));
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.originalname);
+    }
+});
+
+const upload = multer({ storage: storage });
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static(path.join(__dirname, 'images')));
+
+
+app.use('/static', express.static(path.join(__dirname, 'public')));
+
+// Sign up
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
+// Sign up
+app.post('/saveData', (req, res) => {
+    const { username, email, password } = req.body;
+
+    const data = {
+        username: username,
+        email: email,
+        password: password
+    };
+
+    const usersFolder = path.join(__dirname, 'users');
+    const fileName = path.join(usersFolder, 'data.txt');
+
+    if (!fs.existsSync(usersFolder)) {
+        fs.mkdirSync(usersFolder, { recursive: true });
+    }
+
+    fs.appendFileSync(fileName, `Username: ${username}, Password: ${password}\n`);
+
+    const folderName = path.join(__dirname, `user_data/${username}`);
+
+    if (!fs.existsSync(folderName)) {
+        fs.mkdirSync(folderName, { recursive: true });
+    }
+
+    const userFileName = path.join(folderName, 'data.json');
+    fs.writeFileSync(userFileName, JSON.stringify(data, null, 2));
+
+    res.redirect('/main');
+});
+
+
+// Login
+app.get('/login', (req, res) => {
+    res.sendFile(path.join(__dirname, 'login.html'));
+});
+app.get('/main', (req, res) => {
+    res.sendFile(path.join(__dirname, 'main.html'));
+});
+app.get('/add', (req, res) => {
+    res.sendFile(path.join(__dirname, 'add.html'));
+});
+// Login
+app.post('/loginU', (req, res) => {
+    const { username, password } = req.body;
+    const usersFolder = path.join(__dirname, 'users');
+    const fileName = path.join(usersFolder, 'data.txt');
+
+    if (fs.existsSync(fileName)) {
+        const data = fs.readFileSync(fileName, 'utf8');
+        const lines = data.split('\n');
+        const credentials = lines.map(entry => {
+            const [prefix, value] = entry.split(':');
+            if (prefix.trim() === 'Username' || prefix.trim() === 'Password') {
+                return value.trim();
+            }
+        });
+
+        const storedUsername = credentials[0];
+        const storedPassword = credentials[1];
+
+        if (storedUsername === username && storedPassword === password) {
+            res.redirect('/main');
+        } else {
+            res.send('Incorrect username or password. Please sign up if you do not have an account.');
+        }
+    } else {
+        res.send('No user data found. Please sign up.');
+    }
+});
+
+
+
+// Add Post
+app.post('/addPost', upload.single('image'), (req, res) => {
+    const username = req.body.username;
+    const folderName = path.join(__dirname, `user_data/${username}/posts`);
+
+    if (!fs.existsSync(folderName)) {
+        fs.mkdirSync(folderName, { recursive: true });
+    }
+
+    const image = req.file;
+    const description = req.body.description;
+    const postId = uuidv4();
+    const imageFilePath = image.originalname;
+    const fileName = path.join(folderName, `${postId}.txt`);
+    const dataToWrite = `Username: ${username}\nDescription: ${description}\nImage Path: ${imageFilePath}`;
+
+    fs.writeFile(fileName, dataToWrite, (err) => {
+        if (err) {
+            console.error('Error:', err);
+            res.status(500).send('Error occurred while adding the post.');
+        } else {
+            console.log('Data has been saved!');
+            res.send('Post added successfully.');
+        }
+    });
+});
+
+app.get('/getAllPosts', (req, res) => {
+    const mainFolder = path.join(__dirname, 'user_data');
+    const users = fs.readdirSync(mainFolder);
+
+    const allPosts = [];
+
+    users.forEach(user => {
+        const userFolder = path.join(mainFolder, user, 'posts');
+        if (fs.existsSync(userFolder)) {
+            const userPosts = fs.readdirSync(userFolder);
+            userPosts.forEach(post => {
+                const postFile = path.join(userFolder, post);
+                const postContent = fs.readFileSync(postFile, 'utf-8');
+                const lines = postContent.split('\n');
+                if (lines.length >= 3) {
+                    const usernameLine = lines.find(line => line.startsWith('Username:'));
+                    const descriptionLine = lines.find(line => line.startsWith('Description:'));
+                    const imagePathLine = lines.find(line => line.startsWith('Image Path:'));
+
+                    if (usernameLine && descriptionLine && imagePathLine) {
+                        const username = usernameLine.split(':').slice(1).join(':').trim();
+                        const description = descriptionLine.split(':').slice(1).join(':').trim();
+                        const imagePath = imagePathLine.split(':').slice(1).join(':').trim(); // Update this line
+
+                        allPosts.push({
+                            username,
+                            description,
+                            imagePath,
+                        });
+                    } else {
+                        console.error('Data format error in file:', postFile);
+                    }
+                } else {
+                    console.error('Data format error in file:', postFile);
+                }
+            });
+        }
+    });
+
+    res.json(allPosts);
+});
+
+app.listen(port, () => {
+    console.log(`Server is running at http://localhost:${port}`);
+});

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram</title>
+    <link rel="icon"
+        href="https://png.pngtree.com/png-vector/20230213/ourmid/pngtree-letter-n-logo-png-image_6596754.png"
+        type="image/x-icon">
+
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/css/all.min.css'>
+    <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.4.6/tailwind.min.css'>
+    <link rel="stylesheet" href="./style.css">
+
+    <!-- Bootstrap JavaScript (Popper.js and Bootstrap JS) -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/5.0.2/js/bootstrap.min.js"></script>
+
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+        integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Inside the <script> tag of main.html -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        *:focus {
+            outline: none;
+        }
+
+        body {
+            width: 100%;
+            background: #fafafa;
+            position: relative;
+            font-family: 'roboto', sans-serif;
+        }
+
+
+
+
+        .ins-img {
+            height: 100%;
+            margin-top: 7px;
+            margin-left: 425px;
+        }
+
+        .search-box {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 25px;
+            background: #fafafa;
+            border: 1px solid #dfdfdf;
+            border-radius: 2px;
+            color: rgba(0, 0, 0, 0.5);
+            text-align: center;
+            text-transform: capitalize;
+            margin-top: 7px;
+        }
+
+        .search-box::placeholder {
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        .nav-items {
+            height: 22px;
+            position: relative;
+            margin-right: -65px;
+        }
+
+        .icon {
+            height: 100%;
+            cursor: pointer;
+            margin: -7px 10px;
+            display: inline-block;
+        }
+
+        .user-profile {
+            width: 22px;
+            border-radius: 50%;
+            background-image: url(../img/peofile.jpg);
+            background-size: cover;
+        }
+
+        /* Navbar End */
+
+        /* Story Section Start */
+        .main {
+            width: 100%;
+            padding: 40px 0;
+            display: flex;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        .wrapper {
+            width: 90%;
+            max-width: 1000px;
+            display: grid;
+            grid-template-columns: 60% 40%;
+            grid-gap: 30px;
+            margin-top: -50px;
+        }
+
+        .left-col {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .status-wrapper {
+            width: 100%;
+            height: 120px;
+            background: #fff;
+            border: 1px solid #dfdfdf;
+            border-radius: 10px;
+            padding: 10px;
+            padding-right: 0;
+            display: flex;
+            align-items: center;
+            overflow: hidden;
+            overflow-x: auto;
+        }
+
+        .status-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .status-card {
+            flex: 0 0 auto;
+            width: 80px;
+            max-width: 80px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-right: 15px;
+            margin-top: 15px;
+        }
+
+        .profile-pic {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            overflow: hidden;
+            padding: 3px;
+            background: linear-gradient(45deg, rgb(255, 230, 0), rgb(255, 0, 128) 80%);
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #fff;
+        }
+
+        .username {
+            width: 100%;
+            overflow: hidden;
+            text-align: center;
+            font-size: 12px;
+            margin-top: 5px;
+            color: rgba(0, 0, 0, 0.5);
+        }
+
+        /* Story Section End */
+
+        /* Post Section Start */
+        .post {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            border: 1px solid #dfdfdf;
+            margin-top: 20px;
+        }
+
+        .info {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .info .username {
+            width: auto;
+            font-weight: bold;
+            color: #000;
+            font-size: 14px;
+            margin-left: 10px;
+        }
+
+        .info .options {
+            height: 10px;
+            cursor: pointer;
+        }
+
+        .info .user {
+            display: flex;
+            align-items: center;
+        }
+
+        .info .profile-pic {
+            height: 40px;
+            width: 40px;
+            padding: 0;
+            background: none;
+        }
+
+        .info .profile-pic img {
+            border: none;
+        }
+
+        .post-image {
+            height: fit-content;
+            object-fit: cover;
+            width: 100%;
+        }
+
+        .post-content {
+            width: 100%;
+            padding: 20px;
+        }
+
+        .likes {
+            font-weight: bold;
+        }
+
+        .description {
+            margin: 10px 0;
+            font-size: 14px;
+            line-height: 20px;
+        }
+
+        .description span {
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .post-time {
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 12px;
+        }
+
+        .comment-wrapper {
+            width: 100%;
+            height: 50px;
+            border-radius: 1px solid #dfdfdf;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .comment-wrapper .icon {
+            height: 30px;
+        }
+
+        .comment-box {
+            width: 80%;
+            height: 100%;
+            border: none;
+            outline: none;
+            font-size: 14px;
+        }
+
+        .comment-btn,
+        .action-btn {
+            width: 70px;
+            height: 100%;
+            background: none;
+            border: none;
+            outline: none;
+            text-transform: capitalize;
+            font-size: 16px;
+            color: rgb(0, 162, 255);
+            opacity: 0.5;
+        }
+
+        .reaction-wrapper {
+            width: 100%;
+            height: 50px;
+            display: flex;
+            margin-top: -20px;
+            align-items: center;
+        }
+
+        .reaction-wrapper .icon {
+            height: 25px;
+            margin: 0;
+            margin-right: 20px;
+        }
+
+        .reaction-wrapper .icon.save {
+            margin-left: auto;
+        }
+
+        .post2 {
+            width: 100%;
+            height: auto;
+            background: #fff;
+            border: 1px solid #dfdfdf;
+            margin-top: 10px;
+        }
+
+        /* Post Section End */
+
+
+        /* Sidebar Section Start */
+        .right-col {
+            padding: 20px;
+        }
+
+        .profile-card {
+            width: fit-content;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .profile-card .profile-pic {
+            flex: 0 0 auto;
+            padding: 0;
+            background: none;
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+
+        .profile-card:first-child .profile-pic {
+            width: 70px;
+            height: 70px;
+        }
+
+        .profile-card .profile-pic img {
+            border: none;
+        }
+
+        .profile-card .username {
+            font-weight: 500;
+            font-size: 14px;
+            color: #000;
+            text-align: start;
+        }
+
+        .sub-text {
+            color: rgba(0, 0, 0, 0.5);
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: -10px;
+        }
+
+        .action-btn {
+            opacity: 1;
+            font-weight: 700;
+            font-size: 12px;
+        }
+
+        .suggestion-text {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 1100px) {
+
+            .right-col,
+            .search-box {
+                display: none;
+            }
+
+            .nav-wrapper,
+            .wrapper {
+                width: 90%;
+            }
+
+            .post-image {
+                width: 100%;
+            }
+
+            .wrapper {
+                display: block;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .nav-items .icon {
+                margin: 0 5px;
+            }
+
+            .post-image {
+                width: 100%;
+            }
+        }
+
+        /* Sidebar Section End */
+
+
+        /* Edit/ Delete Start */
+        [type=button]:not(:enabled),
+        [type=reset]:not(:enabled),
+        [type=submit]:not(:enabled),
+        button:not(:enabled) {
+            cursor: pointer;
+            border: none;
+            /* color: white; */
+            background: white;
+        }
+
+        .post a::after {
+            content: '';
+            display: none;
+            color: black;
+        }
+
+        .post i {
+            color: #000;
+        }
+    </style>
+    <style>
+        .info {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .username {
+            margin: 0;
+        }
+
+        @media (min-width:700px) {
+            .post {
+                display: flex;
+            }
+
+            .cont-2 {
+                margin: 10px;
+                margin-left: 40px;
+            }
+        }
+    </style>
+</head>
+
+<body studygpt-id="fcejkolobdcfbhhakbhajcflakmnhaff" studygpt-version="2.5.0">
+    <!-- nav -->
+    <nav class="border-b px-4 py-2 bg-white">
+        <div class="flex flex-wrap items-center justify-between md:justify-around">
+            <!-- logo -->
+            <img class="h-10"
+                src="https://png.pngtree.com/png-vector/20230213/ourmid/pngtree-letter-n-logo-png-image_6596754.png"
+                alt="instagram">
+
+            <!-- search-->
+            <div class="relative hidden sm:block text-gray-500">
+                <input id="search-input" class="search-bar max-w-xs border rounded bg-gray-200 px-4
+            text-center outline-none focus:border-gray-400 search-bar" type="search" placeholder="Search">
+                <i class="fa fa-search absolute top-0 left-0 ml-12 mt-1 search-icon"></i>
+            </div>
+            <script>
+                const searchInput = document.getElementById("search-input");
+                const searchIcon = document.querySelector(".search-icon");
+
+                searchIcon.addEventListener("click", () => {
+                    const username = searchInput.value.trim();
+                    if (username) {
+                        // Remove any special characters, including the dollar sign
+                        const cleanedUsername = username.replace(/[^a-zA-Z0-9]/g, "");
+                        // Redirect to the user's profile based on the input
+                        window.location.href = `/userprofile?user=${cleanedUsername}`;
+                    }
+                });
+            </script>
+            <div class="space-x-4">
+                <a class="inline-block bg-blue-500 px-2 py-1 text-white font-semibold 
+                           text-sm rounded" href="/userprofile?user={username}">Profile</a>
+                <a class="inline-block text-blue-500 font-semibold text-sm" href="/add">Add</a>
+                <a class="inline-block text-blue-500 font-semibold text-sm" href="/loginUser">Login</a>
+            </div>
+        </div>
+    </nav>
+       
+        <style>
+            body {
+
+                background-color: #f2f2f2;
+                font-family: Arial, sans-serif;
+            }
+
+            .container {
+                width: 300px;
+                background-color: #fff;
+                border-radius: 10px;
+                margin: 10px;
+                height: 72px;
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 15px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            .userglobal {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                position: absolute;
+                left: 10px;
+
+            }
+
+            .userglobal img {
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                margin-right: 10px;
+            }
+
+            .username {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            .follow-btn {
+                background-color: #4CAF50;
+                border: none;
+                color: white;
+                padding: 8px 14px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                position: absolute;
+                right: 10px;
+                margin-left: 50px;
+                font-size: 14px;
+                margin-top: 10px;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+        </style>
+        <!-- Story Section Start -->
+        <section class="main">
+            <div class="wrapper">
+                <div class="left-col">
+                    <div class="all-post" id="all-posts">
+                        <!-- The server will dynamically generate the posts here -->
+                    </div>
+                </div>
+                <div id="globalfollowerContainer" class="right-col">
+
+                </div>
+            </div>
+        </section>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('/globalfollowers')
+                    .then(response => response.text())
+                    .then(data => {
+                        document.getElementById('globalfollowerContainer').innerHTML = data;
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+        </script>
+        <style>
+            .commentForm {
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                margin-bottom: 20px;
+            }
+
+            .commentInput {
+                flex: 1;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                margin-right: 10px;
+                font-size: 16px;
+            }
+
+            .commentInput::placeholder {
+                color: #aaa;
+            }
+
+            .commentInput:focus {
+                outline: none;
+                border-color: #2196F3;
+            }
+
+            .commentInput:focus::placeholder {
+                color: transparent;
+            }
+
+            .commentForm button {
+                padding: 10px 20px;
+                border: none;
+                background-color: #2196F3;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                font-size: 16px;
+            }
+
+
+
+            .commentForm button:hover {
+                background-color: #0d8bf2;
+            }
+
+            .commentList {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .comment {
+                margin-bottom: 10px;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+            }
+
+            .comment p {
+                flex: 1;
+                margin: 0;
+                padding-left: 10px;
+            }
+
+            .fa-trash {
+                color: red;
+                cursor: pointer;
+            }
+
+            .fa-trash:hover {
+                color: darkred;
+            }
+        </style>
+
+
+
+
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                fetch('/getAllPosts')
+                    .then(response => response.json())
+                    .then(data => {
+                        const allPostsContainer = document.getElementById('all-posts');
+                        data.forEach(post => {
+                            const postElement = document.createElement('div');
+                            postElement.className = 'post';
+                            postElement.innerHTML = `
+                    <div class="cont-1">
+                    <div class="info">
+                        <div class="user">
+                            <a href="/userprofile?user=${post.username}">
+                            <div class="profile-pic">
+                                 <img src="/${post.profileImagePath}" alt="Profile Picture">
+                            </div>
+                        </a>
+                            <p class="username">${post.username}</p>
+                        </div>
+                    </div>
+                    <img src="/${post.imagePath}" class="post-image" alt="Post Image">
+                    <div class="post-content">
+                        <p class="description">${post.description}</p>
+                    </div>
+                </div>
+                    <div class="cont-2">
+                    <form class="commentForm">
+                        <input type="text" class="commentInput" placeholder="Write a comment">
+                        <button id="deleteButton" type="button" onclick="postComment(this, '${post.imagePath}', '${post.username}')">Post</button>
+                    </form>
+                    <div class="commentList" id="${post.username}-${post.imagePath}"></div></div>
+                `;
+                            allPostsContainer.appendChild(postElement);
+                            fetchComments(post.username, post.imagePath);
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
+
+
+
+
+
+            async function fetchComments(username, postImagePath) {
+                fetch(`/getComments?username=${username}&postImagePath=${postImagePath}`)
+                    .then(response => response.json())
+                    .then(comments => {
+                        const commentList = document.getElementById(`${username}-${postImagePath}`);
+                        if (comments && commentList) {
+                            comments.forEach(commentData => {
+                                const commentElement = document.createElement('div');
+                                commentElement.className = 'comment';
+
+                                commentElement.innerHTML = `
+                              <!--<p>Comment ID: ${commentData.CommentId}</p>-->
+                              <p>${commentData.SenderUsername}👉${commentData.Comment}</p>
+
+                          `;
+                                commentList.appendChild(commentElement);
+                            });
+                        }
+                    });
+            }
+
+
+            function deleteComment(commentId, postImagePath) {
+                fetch('/deleteComment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ commentId, postImagePath })
+                }).then(response => {
+                    if (response.ok) {
+                        fetchComments(post.username, post.imagePath);
+                        if (commentElement) {
+                            commentElement.parentNode.removeChild(commentElement);
+                        } else {
+                            console.error('Comment element not found');
+                        }
+                    } else {
+                        console.error('Failed to delete comment');
+                    }
+                }).catch(error => console.error('Error:', error));
+            }
+
+
+
+
+
+            function postComment(button, postImagePath, username) {
+                const commentInput = button.parentNode.querySelector('.commentInput').value;
+
+
+                const commentData = {
+                    postId: postImagePath.split('/').pop(),
+                    comment: commentInput,
+                    username: username, // Post owner's username
+                };
+
+                fetch('/postComment', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(commentData)
+                }).then(response => {
+                    if (response.ok) {
+                        addComment(commentInput, button);
+                        button.parentNode.querySelector('.commentInput').value = ''; // Clear the input field
+                    } else {
+                        console.error('Failed to post comment');
+                    }
+                }).catch(error => console.error('Error:', error));
+            }
+
+
+
+
+
+
+            function addComment(text, button) {
+                const commentList = button.parentNode.nextElementSibling;
+                if (commentList) {
+                    const comment = document.createElement('div');
+                    comment.className = 'comment';
+                    comment.textContent = text;
+                    commentList.appendChild(comment);
+                }
+            }
+
+        </script>
+
+
+
+
+        <!-- Edit Modal Start -->
+        <!-- Edit Modal -->
+        <div style="display: none;" class="modal fade" id="edit-modal">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Edit Your Post</h2>
+                        <button class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="msg"></div>
+                        <form action="" id="edit_post">
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+</body>
+
+</html>

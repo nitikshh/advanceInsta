@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Post</title>
+    <link rel="icon"
+        href="https://png.pngtree.com/png-vector/20230213/ourmid/pngtree-letter-n-logo-png-image_6596754.png"
+        type="image/x-icon">
+    <!-- Css Linkup -->
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 400px;
+            margin: auto;
+            text-align: center;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+
+        input[type="file"] {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 90%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #dddddd;
+            margin-bottom: 20px;
+            margin-right:10px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+            background-color: #4CAF50;
+            color: #ffffff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+      #upload-progress {
+          width: 100%;
+          height: 30px;
+          border: 1px solid #ddd;
+          border-radius: 5px;
+          overflow: hidden;
+      }
+
+      #upload-progress::-webkit-progress-value {
+          background: linear-gradient(to right, #4CAF50, #8BC34A);
+      }
+
+      #upload-progress::-moz-progress-bar {
+          background: linear-gradient(to right, #4CAF50, #8BC34A);
+      }
+
+      #upload-progress::-webkit-progress-bar {
+          background-color: #f3f3f3;
+      }
+
+      #upload-progress::-moz-progress-bar {
+          background-color: #f3f3f3;
+      }
+      .commentList .comment:first-child {
+        display: none;
+      }
+
+  </style>
+
+</head>
+
+<body>
+    <div class="container">
+        <h2>Add a Post</h2>
+        <img class="profile-img" id="profile-image" src="" alt="Profile Image" style="width: 100%;">
+        <form id="post-form" enctype="multipart/form-data">
+            <div>
+                <label for="image">Choose an image:</label>
+                <input type="file" id="image" name="image" accept="image/*" required>
+            </div>
+            <div>
+                <label for="description">Description:</label>
+                <textarea id="description" name="description" rows="4" cols="50" required></textarea>
+            </div>
+            <div>
+                <progress value="0" max="100" id="upload-progress"></progress>
+            </div>
+            <button type="submit">Add Post</button>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const profileImage = document.getElementById('profile-image');
+            fetch('/getProfileImagePath')
+                .then(response => response.text())
+                .then(data => {
+                    if (data !== 'No profile photo found.') {
+                        profileImage.src = data;
+                    } else {
+                        console.error('Profile image not found.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+            const postForm = document.getElementById('post-form');
+            const uploadProgress = document.getElementById('upload-progress');
+            postForm.addEventListener('submit', function (event) {
+                event.preventDefault();
+                const formData = new FormData(postForm);
+                const username = 'yes';
+
+                if (username) {
+                    formData.append('username', username);
+                    const xhr = new XMLHttpRequest();
+                    xhr.upload.addEventListener('progress', function (e) {
+                        if (e.lengthComputable) {
+                            const progress = (e.loaded / e.total) * 100;
+                            uploadProgress.value = progress;
+                        }
+                    });
+                    xhr.onreadystatechange = function () {
+                        if (xhr.readyState === 4 && xhr.status === 200) {
+                            uploadProgress.value = 100; // Complete progress
+                            // Redirect or display a success message here
+                            window.location.href = "/main";
+                        }
+                    };
+                    xhr.open('POST', '/addPost', true);
+                    xhr.send(formData);
+                } else {
+                    alert('Please log in to add a post.');
+                }
+            });
+        });
+    </script>
+
+</body>
+
+</html>
